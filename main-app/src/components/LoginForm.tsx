@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
     <div 
       className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden transition-all duration-1000"
       style={{
-        backgroundImage: `url('/cool-music-vibe-background.jpg')`,
+        backgroundColor: 'black',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -114,13 +114,6 @@ const LoginForm: React.FC = () => {
               Login
             </button>
           </form>
-
-          {/* Register link */}
-          <div className="mt-6 text-center">
-            <p className="text-white">
-              Don't have an account? <a href="#" className="text-purple-300 hover:text-purple-200 transition-colors">Register</a>
-            </p>
-          </div>
         </div>
       </div>
     </div>
