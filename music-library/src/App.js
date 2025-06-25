@@ -93,11 +93,7 @@ const App = () => {
             )}
           </button>
         </div>
-        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900 rounded-lg">
-          <p className="text-green-800 dark:text-green-200">
-            Music Library App is running in standalone mode
-          </p>
-        </div>
+      
         <SongLibrary />
       </div>
     </div>
