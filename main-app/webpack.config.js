@@ -61,22 +61,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "mainApp",
       remotes: {
-        musicLibrary: `promise new Promise((resolve, reject) => {
-          const remoteUrl = "${musicLibraryUrl}";
-          const script = document.createElement('script');
-          script.src = remoteUrl;
-          script.onload = () => {
-            // Remote loaded successfully, resolve with the remote
-            const remote = window.music_library;
-            resolve(remote);
-          };
-          script.onerror = (error) => {
-            // Remote failed to load, provide a fallback or reject
-            console.error('Error loading remote module:', error);
-            reject(new Error('Failed to load remote module: ' + remoteUrl));
-          };
-          document.head.appendChild(script);
-        })`,
+        musicLibrary: `music_library@${musicLibraryUrl}`,
       },
       shared: {
         react: { singleton: true, requiredVersion: '^18.0.0' },
