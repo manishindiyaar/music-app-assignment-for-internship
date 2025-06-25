@@ -2,9 +2,15 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const path = require("path");
 
+// Get environment variables or use defaults
+const isProd = process.env.NODE_ENV === 'production';
+const musicLibraryUrl = isProd 
+  ? process.env.MUSIC_LIBRARY_URL || 'https://music-library.yourdomain.com/remoteEntry.js'
+  : 'http://localhost:3003/remoteEntry.js';
+
 module.exports = {
   entry: "./src/index",
-  mode: "development",
+  mode: isProd ? "production" : "development",
   devServer: {
     static: {
       directory: path.join(__dirname, "public"),
@@ -14,6 +20,8 @@ module.exports = {
   },
   output: {
     publicPath: "auto",
+    filename: '[name].[contenthash].js',
+    clean: isProd,
   },
   module: {
     rules: [
@@ -47,7 +55,7 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "mainApp",
       remotes: {
-        musicLibrary: "music_library@http://localhost:3003/remoteEntry.js",
+        musicLibrary: `music_library@${musicLibraryUrl}`,
       },
       shared: {
         react: { singleton: true },
@@ -59,5 +67,11 @@ module.exports = {
       template: "./public/index.html",
     }),
   ],
+  optimization: isProd ? {
+    minimize: true,
+    splitChunks: {
+      chunks: 'all',
+    },
+  } : undefined,
 };
 

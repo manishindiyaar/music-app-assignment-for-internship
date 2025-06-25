@@ -5,7 +5,9 @@
     "main": "index.js",
     "scripts": {
         "start": "webpack serve",
-        "build": "webpack --mode production"
+        "build": "NODE_ENV=production webpack --mode production",
+        "build:dev": "webpack --mode development",
+        "serve:dist": "npx serve dist -p 3000"
     },
     "keywords": [],
     "author": "",

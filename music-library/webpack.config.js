@@ -2,15 +2,23 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { ModuleFederationPlugin } = require('webpack').container;
 const path = require('path');
 
+// Get environment variables or use defaults
+const isProd = process.env.NODE_ENV === 'production';
+const publicPath = isProd 
+  ? process.env.PUBLIC_PATH || 'https://music-library.yourdomain.com/'
+  : 'auto';
+
 module.exports = {
   entry: './src/index',
-  mode: 'development',
+  mode: isProd ? 'production' : 'development',
   devServer: {
     static: path.join(__dirname, 'dist'),
     port: 3003,
   },
   output: {
-    publicPath: 'auto',
+    publicPath: publicPath,
+    filename: '[name].[contenthash].js',
+    clean: isProd,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
@@ -48,4 +56,10 @@ module.exports = {
       template: './public/index.html',
     }),
   ],
+  optimization: isProd ? {
+    minimize: true,
+    splitChunks: {
+      chunks: 'all',
+    },
+  } : undefined,
 };
