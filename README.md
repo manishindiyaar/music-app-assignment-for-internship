@@ -12,6 +12,7 @@ This was my very first encounter with Module Federation. I spent roughly **5–6
 first i sketch the app 
 ![Admin Role UI](./ref/adminrole_ui.png)
 ![User Role UI](./ref/userrole_ui.png)
+![Main App](./ref/actual_ui.png)
 
 
 ## Deployed Links
