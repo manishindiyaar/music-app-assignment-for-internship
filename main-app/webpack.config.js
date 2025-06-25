@@ -5,8 +5,10 @@ const path = require("path");
 // Get environment variables or use defaults
 const isProd = process.env.NODE_ENV === 'production';
 const musicLibraryUrl = isProd 
-  ? process.env.MUSIC_LIBRARY_URL || 'https://music-library.yourdomain.com/remoteEntry.js'
+  ? process.env.MUSIC_LIBRARY_URL || 'https://music-app-assignment-for-internship.vercel.app//remoteEntry.js'
   : 'http://localhost:3003/remoteEntry.js';
+
+console.log('Using music library URL:', musicLibraryUrl);
 
 module.exports = {
   entry: "./src/index",
@@ -46,6 +48,10 @@ module.exports = {
           "postcss-loader",
         ],
       },
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {
@@ -55,11 +61,26 @@ module.exports = {
     new ModuleFederationPlugin({
       name: "mainApp",
       remotes: {
-        musicLibrary: `music_library@${musicLibraryUrl}`,
+        musicLibrary: `promise new Promise((resolve, reject) => {
+          const remoteUrl = "${musicLibraryUrl}";
+          const script = document.createElement('script');
+          script.src = remoteUrl;
+          script.onload = () => {
+            // Remote loaded successfully, resolve with the remote
+            const remote = window.music_library;
+            resolve(remote);
+          };
+          script.onerror = (error) => {
+            // Remote failed to load, provide a fallback or reject
+            console.error('Error loading remote module:', error);
+            reject(new Error('Failed to load remote module: ' + remoteUrl));
+          };
+          document.head.appendChild(script);
+        })`,
       },
       shared: {
-        react: { singleton: true },
-        "react-dom": { singleton: true },
+        react: { singleton: true, requiredVersion: '^18.0.0' },
+        "react-dom": { singleton: true, requiredVersion: '^18.0.0' },
         "react-router-dom": { singleton: true },
       },
     }),
