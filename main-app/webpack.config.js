@@ -5,7 +5,7 @@ const path = require("path");
 // Get environment variables or use defaults
 const isProd = process.env.NODE_ENV === 'production';
 const musicLibraryUrl = isProd 
-  ? process.env.MUSIC_LIBRARY_URL || 'https://music-app-assignment-for-internship.vercel.app//remoteEntry.js'
+  ? process.env.MUSIC_LIBRARY_URL || 'https://music-library-finaacplus-manishindiyaars-projects.vercel.app/remoteEntry.js'
   : 'http://localhost:3003/remoteEntry.js';
 
 console.log('Using music library URL:', musicLibraryUrl);
