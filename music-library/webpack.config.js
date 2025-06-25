@@ -5,7 +5,7 @@ const path = require('path');
 // Get environment variables or use defaults
 const isProd = process.env.NODE_ENV === 'production';
 const publicPath = isProd 
-  ? process.env.PUBLIC_PATH || 'https://music-library.yourdomain.com/'
+  ? process.env.PUBLIC_PATH || 'auto'
   : 'auto';
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
   },
   output: {
     publicPath: publicPath,
-    filename: '[name].[contenthash].js',
+    filename: isProd ? '[name].[contenthash].js' : '[name].js',
     clean: isProd,
   },
   resolve: {
@@ -50,10 +50,17 @@ module.exports = {
       exposes: {
         './App': './src/App',
       },
-      shared: { react: { singleton: true }, 'react-dom': { singleton: true } },
+      shared: { 
+        react: { singleton: true, requiredVersion: '^18.0.0' }, 
+        'react-dom': { singleton: true, requiredVersion: '^18.0.0' } 
+      },
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      favicon: './public/favicon.ico',
+      templateParameters: {
+        title: 'Music Library',
+      },
     }),
   ],
   optimization: isProd ? {

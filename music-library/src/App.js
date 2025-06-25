@@ -4,11 +4,20 @@ import "./styles/global.css";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if user prefers dark mode
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setDarkMode(prefersDark);
+    try {
+      // Check if user prefers dark mode
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(prefersDark);
+      setIsLoading(false);
+    } catch (err) {
+      console.error('Error in initialization:', err);
+      setError(err.message);
+      setIsLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -21,6 +30,19 @@ const App = () => {
       document.body.classList.remove('dark');
     }
   }, [darkMode]);
+
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4">
+        <h2 className="text-xl text-red-500 mb-4">Error loading application:</h2>
+        <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded">{error}</pre>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -70,6 +92,11 @@ const App = () => {
               </svg>
             )}
           </button>
+        </div>
+        <div className="mb-4 p-4 bg-green-100 dark:bg-green-900 rounded-lg">
+          <p className="text-green-800 dark:text-green-200">
+            Music Library App is running in standalone mode
+          </p>
         </div>
         <SongLibrary />
       </div>
