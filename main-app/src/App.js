@@ -1,7 +1,6 @@
 import React, { Suspense, useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
-import { SongProvider } from "./context/SongContext";
 import Header from "./components/Header";
 import LoginForm from "./components/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -76,9 +75,7 @@ const App = () => {
   return (
     <Router>
       <AuthContextProvider>
-        <SongProvider>
-          <AppContent />
-        </SongProvider>
+        <AppContent />
       </AuthContextProvider>
     </Router>
   );
